@@ -1,5 +1,5 @@
 import './App.css';
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import Products from './Products';
 import Cart from './Cart';
 
@@ -7,10 +7,22 @@ import Cart from './Cart';
 const PAGE_PRODUCTS = 'products'
 const PAGE_CART = 'cart'
 
+// get item from local storage
+const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart'))
+
+
 function App() {
-  
-  // the cart, array to add items into
-  const [cart, setCart] = useState([])
+  // state of cart from local storage, render this
+  const [cart, setCart] = useState(cartFromLocalStorage)
+  const [page, setPage] = useState('products')
+
+  // every time state changes on screen aka adding or removing from cart state
+  // fire useeffect by adding item or removing into local storage
+  // the third parameter watches the cart array, call useeffect when cart changes
+  useEffect(() => {
+    localStorage.setItem('shit', JSON.stringify(cart))
+  }, [cart])
+
 
   const addToCart = (product) => {
     // update cart by creating a new array and appending the product as an object
@@ -25,8 +37,10 @@ function App() {
     )
   }
 
-  // toggle pages between products and cart
-  const [page, setPage] = useState('products')
+  const getCartTotal = () => {
+    return cart.reduce((sum, { quantity }) => sum + quantity, 0)
+  }
+  
   // pass in a string of either 'products' or 'cart', update page state
   // since page is updated, only one will be rendered
   const navigateTo = (nextPage) => {
