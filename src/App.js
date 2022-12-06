@@ -1,6 +1,7 @@
 import React, {useState} from "react"
 import "./App.css"
 import Products from "./Products"
+import Cart from "./Cart"
 
 function App() {
   const [cart, setCart] = useState([])
@@ -10,7 +11,6 @@ function App() {
     // name and cost for cart page, also filters based on id instead of duplicates
     setCart([...cart, {...e}])
   }  
-
   const remove = (e) => {
     setCart(
       // for each i in cart, add i if not the same as item passed in from remove btn
@@ -25,32 +25,13 @@ function App() {
     setPage(thisPage)
   }
 
-  // => () means return jsx, need a <> for root element for components
-  const renderCart = () => (
-    <>
-      <h1>cart</h1>
-      <h2>total: ${sum()}</h2>
-      {/* need a div element for jsx */}
-      <div className="grid">
-        {/* need key for mapping */}
-        {cart.map((item, idx) => (
-          <div className="product" key={idx}>
-            <p>{item.name}</p>
-            <p>${item.cost}</p>
-            <button onClick={() => remove(item)}>remove</button>
-          </div>
-        ))}
-      </div>
-    </>
-  )
-
   return (
     <div className="App"> 
       {/* () => means on click, need this for buttons bc of rerender error */}
       <button onClick={() => navigateTo('cart')}>go to cart ({cart.length})</button>
       <button onClick={() => navigateTo('products')}>products</button>
       {page === 'products' && <Products add={add}/>}
-      {page === 'cart' && renderCart()}
+      {page === 'cart' && <Cart cart={cart} remove={remove} sum={sum}/>}
     </div>
   )
 } 
