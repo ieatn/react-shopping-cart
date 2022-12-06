@@ -1,64 +1,45 @@
-import './App.css';
-import { React, useEffect, useState } from 'react';
-import Products from './Products';
-import Cart from './Cart';
-
-// use constants instead of hard coding
-const PAGE_PRODUCTS = 'products'
-const PAGE_CART = 'cart'
-
-// get item from local storage
-const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart'))
-
+import React, {useState} from "react"
+import "./App.css"
 
 function App() {
-  // state of cart from local storage, render this
-  const [cart, setCart] = useState(cartFromLocalStorage)
-  const [page, setPage] = useState('products')
-
-  // every time state changes on screen aka adding or removing from cart state
-  // fire useeffect by adding item or removing into local storage
-  // the third parameter watches the cart array, call useeffect when cart changes
-  useEffect(() => {
-    localStorage.setItem('shit', JSON.stringify(cart))
-  }, [cart])
-
-
-  const addToCart = (product) => {
-    // update cart by creating a new array and appending the product as an object
-    // so when you click remove from cart, it only deletes 1 instead of duplicates
-    setCart([...cart, { ...product }])
+  const [cart, setCart] = useState([])
+  const [products, setProducts] = useState([
+    {
+      name: 'battery',
+      price: '$2.99'
+    },
+    {
+      name: 'blanket',
+      price: '$9.99'
+    },
+  ])
+  const add = (e) => {
+    setCart([...cart, e])
   }
-
-  const removeFromCart = (productToRemove) => {
-    // update cart by create new array, don't include any product equal to the input
-    setCart(
-      cart.filter((product) => product !== productToRemove)
-    )
+  const showCart = () => {
+    console.log(cart)
   }
-
-  const getCartTotal = () => {
-    return cart.reduce((sum, { quantity }) => sum + quantity, 0)
-  }
-  
-  // pass in a string of either 'products' or 'cart', update page state
-  // since page is updated, only one will be rendered
-  const navigateTo = (nextPage) => {
-    setPage(nextPage)
-  }
+  const renderProducts = () => (
+    <>
+      <h1>products</h1>
+      <div className="grid">
+        {products.map((item, idx) => (
+          <div className="product" key={idx}>
+            <p>{item.name}</p>
+            <p>{item.price}</p>
+            <button onClick={() => add(item.name)}>add</button>
+          </div>
+        ))}
+      </div>
+    </>
+  )
 
   return (
-    <div className='app'> 
-      <header>
-        <button onClick={() => navigateTo(PAGE_CART)}>go to cart ({cart.length})</button>
-        <button onClick={() => navigateTo(PAGE_PRODUCTS)}>view products</button>
-      </header>
-      {/* only call render on the one that's equal to page state, display page */}
-      {/* pass in addtocart function as a prop to products jsx */}
-      {page === PAGE_PRODUCTS && <Products addToCart={addToCart} />}
-      {page === PAGE_CART && <Cart cart={cart} removeFromCart={removeFromCart} />}
+    <div className="App"> 
+      <button onClick={showCart}>cart ({cart.length})</button>
+      <button>products</button>
+      {renderProducts()}
     </div>
-  );
-}
-
+  )
+} 
 export default App;
