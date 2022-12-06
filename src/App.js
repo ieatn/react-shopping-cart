@@ -3,6 +3,7 @@ import "./App.css"
 
 function App() {
   const [cart, setCart] = useState([])
+  const [page, setPage] = useState('products')
   const [products, setProducts] = useState([
     {
       name: 'battery',
@@ -17,6 +18,7 @@ function App() {
     setCart([...cart, e])
   }
   const showCart = () => {
+    setPage('cart')
   }
   const renderProducts = () => (
     <>
@@ -50,10 +52,9 @@ function App() {
     <div className="App"> 
       <button onClick={showCart}>go to cart ({cart.length})</button>
       <button>products</button>
-      {renderProducts()}
-      {renderCart()}
+      {page === 'products' && renderProducts()}
+      {page === 'cart' && renderCart()}
     </div>
   )
 } 
 export default App;
-
