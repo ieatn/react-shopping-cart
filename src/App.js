@@ -21,6 +21,10 @@ function App() {
     // declare total = sum, destructure cost from object, add cost to sum, default 0
     return cart.reduce((sum, { cost }) => sum + cost , 0)
   }
+  // really easy just set cart to empty arr
+  const clear = () => {
+    setCart([])
+  }
   const navigateTo = (thisPage) => {
     setPage(thisPage)
   }
@@ -31,7 +35,7 @@ function App() {
       <button onClick={() => navigateTo('cart')}>go to cart ({cart.length})</button>
       <button onClick={() => navigateTo('products')}>products</button>
       {page === 'products' && <Products add={add}/>}
-      {page === 'cart' && <Cart cart={cart} remove={remove} sum={sum}/>}
+      {page === 'cart' && <Cart cart={cart} remove={remove} sum={sum} clear={clear}/>}
     </div>
   )
 } 
