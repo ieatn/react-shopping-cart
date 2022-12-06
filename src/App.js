@@ -17,8 +17,8 @@ function App() {
   const add = (e) => {
     setCart([...cart, e])
   }
-  const showCart = () => {
-    setPage('cart')
+  const navigateTo = (thisPage) => {
+    setPage(thisPage)
   }
   const renderProducts = () => (
     <>
@@ -34,10 +34,13 @@ function App() {
       </div>
     </>
   )
+  // => () means return jsx, need a <> for root element for components
   const renderCart = () => (
     <>
       <h1>cart</h1>
+      {/* need a div element for jsx */}
       <div className="grid">
+        {/* need key for mapping */}
         {cart.map((item, idx) => (
           <div className="product" key={idx}>
             <p>{item.name}</p>
@@ -50,8 +53,9 @@ function App() {
 
   return (
     <div className="App"> 
-      <button onClick={showCart}>go to cart ({cart.length})</button>
-      <button>products</button>
+      {/* () => means on click, need this for buttons bc of rerender error */}
+      <button onClick={() => navigateTo('cart')}>go to cart ({cart.length})</button>
+      <button onClick={() => navigateTo('products')}>products</button>
       {page === 'products' && renderProducts()}
       {page === 'cart' && renderCart()}
     </div>
