@@ -15,7 +15,15 @@ function App() {
     },
   ])
   const add = (e) => {
-    setCart([...cart, e])
+    // {...item} destructure all properties from passed in object so you can display
+    // name and price for cart page, also filters based on id instead of duplicates
+    setCart([...cart, {...e}])
+  }
+  const remove = (e) => {
+    setCart(
+      // for each i in cart, add i if not the same as item passed in from remove btn
+      cart.filter((i) => i !== e)
+    )
   }
   const navigateTo = (thisPage) => {
     setPage(thisPage)
@@ -45,6 +53,7 @@ function App() {
           <div className="product" key={idx}>
             <p>{item.name}</p>
             <p>{item.price}</p>
+            <button onClick={() => remove(item)}>remove</button>
           </div>
         ))}
       </div>
