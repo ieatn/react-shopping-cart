@@ -17,7 +17,6 @@ function App() {
     setCart([...cart, e])
   }
   const showCart = () => {
-    console.log(cart)
   }
   const renderProducts = () => (
     <>
@@ -27,7 +26,20 @@ function App() {
           <div className="product" key={idx}>
             <p>{item.name}</p>
             <p>{item.price}</p>
-            <button onClick={() => add(item.name)}>add</button>
+            <button onClick={() => add(item)}>add</button>
+          </div>
+        ))}
+      </div>
+    </>
+  )
+  const renderCart = () => (
+    <>
+      <h1>cart</h1>
+      <div className="grid">
+        {cart.map((item, idx) => (
+          <div className="product" key={idx}>
+            <p>{item.name}</p>
+            <p>{item.price}</p>
           </div>
         ))}
       </div>
@@ -36,10 +48,12 @@ function App() {
 
   return (
     <div className="App"> 
-      <button onClick={showCart}>cart ({cart.length})</button>
+      <button onClick={showCart}>go to cart ({cart.length})</button>
       <button>products</button>
       {renderProducts()}
+      {renderCart()}
     </div>
   )
 } 
 export default App;
+
