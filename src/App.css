@@ -4,9 +4,6 @@ body {
   font-size: 24px;
   text-align: center;
 }
-li {
-  list-style-type: none;
-}
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

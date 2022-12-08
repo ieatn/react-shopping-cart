@@ -1,7 +1,7 @@
 import React from 'react'
 
 // pass in cart and remove function
-export default function Cart({cart, remove, sum, clear}) {
+export default function Cart({cart, remove, sum, clear, setQuantity}) {
   return (
     <div>
         <>
@@ -16,6 +16,13 @@ export default function Cart({cart, remove, sum, clear}) {
             <div className="product" key={idx}>
                 <p>{item.name}</p>
                 <p>${item.cost}</p>
+                <input 
+                  value={item.quantity} 
+                  onChange={(e) => 
+                    setQuantity(item, parseInt(e.target.value))
+                  }
+                >
+                </input>
                 <button onClick={() => remove(item)}>remove</button>
             </div>
             ))}
