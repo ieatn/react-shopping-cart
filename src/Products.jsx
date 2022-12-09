@@ -1,17 +1,10 @@
-// just rfc, copy paste from renderProducts(), delete it, then import this file into app.js
-// pass in add to cart function from app to products component using props
-// bring in products default array usestate
 import { useState } from "react"
 import React from 'react'
 
-// when adding in add function props, have to destructure it with {} 
-export default function Products({add}) {
-    // dont need setProducts function
+export default function Products({cart, setCart}) {
     const [products] = useState([
         {
           name: 'battery',
-          // changed variable name to cost instead of price
-          // turn into int for sum function
           cost: 2.99,
           img: 'https://i0.wp.com/vision-forward.org/wp-content/uploads/2018/10/AA-Battery.jpg?fit=1280%2C1280&ssl=1',
           category: 'electronics'
@@ -24,10 +17,30 @@ export default function Products({add}) {
         },
     ])
     const [category, setCategory] = useState(['home'])
+
     const getCategory = () => {
       return products.filter(product => product.category === category)
     }
 
+    // add quantities
+    const add = (e) => {
+      let newCart = [...cart]
+      // is this new item identical to existing item in cart?
+      let itemInCart = cart.find(item => item.name === e.name)
+      // if in cart already, add +1, else create new item and push to cart
+      if (itemInCart) {
+        // is quantity a built in property or can you declare properties automatically in js?
+        itemInCart.quantity++
+      } else {
+        // wow you can create a whole object instantly, pass in item object
+        itemInCart = {
+          ...e,
+          quantity: 1,
+        }
+        newCart.push(itemInCart)
+        setCart(newCart)
+      }
+    }
 
 
   return (
