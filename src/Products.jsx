@@ -12,21 +12,39 @@ export default function Products({add}) {
           name: 'battery',
           // changed variable name to cost instead of price
           // turn into int for sum function
-          cost: 2.99
+          cost: 2.99,
+          img: 'https://i0.wp.com/vision-forward.org/wp-content/uploads/2018/10/AA-Battery.jpg?fit=1280%2C1280&ssl=1',
+          category: 'electronics'
         },
         {
           name: 'blanket',
-          cost: 9.99
+          cost: 9.99,
+          img: 'https://m.media-amazon.com/images/I/81-x+F2EsHL.jpg',
+          category: 'home'
         },
     ])
+    const [category, setCategory] = useState(['home'])
+    const getCategory = () => {
+      return products.filter(product => product.category === category)
+    }
+
+
+
   return (
     <>
       <h1>products</h1>
+      {/* no tag combined with select makes the option button inline and smaller */}
+      Select a category
+      <select onChange={(e) => setCategory(e.target.value)}>
+        <option value="home">home</option>
+        <option value="electronics">electronics</option>
+      </select>
       <div className="grid">
-        {products.map((item, idx) => (
+        {getCategory().map((item, idx) => (
           <div className="product" key={idx}>
             <p>{item.name}</p>
             <p>${item.cost}</p>
+            <p><img src={item.img} alt="" /></p>
             <button onClick={() => add(item)}>add</button>
           </div>
         ))}
