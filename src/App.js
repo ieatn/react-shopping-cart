@@ -1,64 +1,36 @@
-import './App.css';
-import { React, useEffect, useState } from 'react';
-import Products from './Products';
-import Cart from './Cart';
+import React, {useState} from "react"
+import "./App.css"
+import Products from "./Products"
+import Cart from "./Cart"
+import { useEffect } from "react"
 
-// use constants instead of hard coding
-const PAGE_PRODUCTS = 'products'
-const PAGE_CART = 'cart'
-
-// get item from local storage
-const cartFromLocalStorage = JSON.parse(localStorage.getItem('cart'))
-
+const cartStorage = JSON.parse(localStorage.getItem('cart'))
 
 function App() {
-  // state of cart from local storage, render this
-  const [cart, setCart] = useState(cartFromLocalStorage)
+  const [cart, setCart] = useState(cartStorage)
   const [page, setPage] = useState('products')
 
-  // every time state changes on screen aka adding or removing from cart state
-  // fire useeffect by adding item or removing into local storage
-  // the third parameter watches the cart array, call useeffect when cart changes
   useEffect(() => {
-    localStorage.setItem('shit', JSON.stringify(cart))
+    localStorage.setItem('cart', JSON.stringify(cart))
+  // pass in cart array, whenever this arr changes, fire off useeffect
   }, [cart])
 
-
-  const addToCart = (product) => {
-    // update cart by creating a new array and appending the product as an object
-    // so when you click remove from cart, it only deletes 1 instead of duplicates
-    setCart([...cart, { ...product }])
+  const getCartLength = () => {
+    return cart.reduce((sum, {quantity}) => sum + quantity, 0)
   }
 
-  const removeFromCart = (productToRemove) => {
-    // update cart by create new array, don't include any product equal to the input
-    setCart(
-      cart.filter((product) => product !== productToRemove)
-    )
-  }
-
-  const getCartTotal = () => {
-    return cart.reduce((sum, { quantity }) => sum + quantity, 0)
-  }
-  
-  // pass in a string of either 'products' or 'cart', update page state
-  // since page is updated, only one will be rendered
-  const navigateTo = (nextPage) => {
-    setPage(nextPage)
+  const navigateTo = (thisPage) => {
+    setPage(thisPage)
   }
 
   return (
-    <div className='app'> 
-      <header>
-        <button onClick={() => navigateTo(PAGE_CART)}>go to cart ({cart.length})</button>
-        <button onClick={() => navigateTo(PAGE_PRODUCTS)}>view products</button>
-      </header>
-      {/* only call render on the one that's equal to page state, display page */}
-      {/* pass in addtocart function as a prop to products jsx */}
-      {page === PAGE_PRODUCTS && <Products addToCart={addToCart} />}
-      {page === PAGE_CART && <Cart cart={cart} removeFromCart={removeFromCart} />}
+    <div className="App"> 
+      {/* () => means on click, need this for buttons bc of rerender error */}
+      <button onClick={() => navigateTo('cart')}>go to cart ({getCartLength()})</button>
+      <button onClick={() => navigateTo('products')}>products</button>
+      {page === 'products' && <Products cart={cart} setCart={setCart}/>}
+      {page === 'cart' && <Cart cart={cart} setCart={setCart}/>}
     </div>
-  );
-}
-
+  )
+} 
 export default App;

@@ -1,26 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-* {
-  box-sizing: border-box;
-}
 body {
-  margin: 0;
   font-family: 'Poppins', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.app {
+  font-size: 24px;
   text-align: center;
 }
-.app img {
-  width: 200px;
-}
-/* make products into a grid */
-.products {
+.grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
 }
-header {
-  padding-top: 20px;
+button {
+  width: 100px;
+}
+img {
+  width: 200px;
 }
